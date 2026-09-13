@@ -21,6 +21,10 @@
 
 **Insidia principale:** gli ID spell sono un contratto condiviso tra client e server — qualunque spell custom richiede far combaciare esattamente `fullidx` lato ClassicUO e lo spellID inviato da ModernUO (vedi vincolo bitmask a 64 bit già documentato lato server).
 
+## Verifica esterna (2026-09-13)
+
+**Nessuna conferma esterna diretta trovata per `SpellDefinition.FullIndexSetModifySpell(...)`** — né in forum ServUO, né in discussioni GitHub pubbliche. La ricerca ha però confermato indirettamente il contesto: fonti esterne concordano che in ClassicUO "i valori sono hardcoded" e le definizioni spell vivono in classi come `SpellsMagery.cs` con la classe `SpellDefinition` — coerente con quanto già verificato leggendo il codice. Il metodo specifico per registrare/sovrascrivere uno spell a runtime resta però un dettaglio di implementazione troppo di nicchia per comparire in discussioni pubbliche indicizzate — non è un segnale negativo, è plausibile che sia corretto ma semplicemente non documentato altrove. Nessuna discrepanza trovata, ma nemmeno conferma indipendente: prenderlo come "verificato solo nel codice", non come "prassi nota alla community".
+
 ## Decisioni custom
 
 Nessuna decisione ancora presa.

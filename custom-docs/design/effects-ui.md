@@ -40,6 +40,10 @@ Questo conferma in modo diretto la nota generale sul "client custom" in `custom-
 - Il fallback silenzioso ("se il file manca o è malformato, torna all'archivio originale con solo un warning") significa che un errore di formattazione in un asset custom non blocca l'avvio, ma può risultare in un asset mancante/sbagliato senza errore evidente — utile saperlo in fase di debug.
 - Per `BuffTable`, un `iconID` calcolato che superi la lunghezza dell'array (`iconID < BuffTable.Table.Length`) viene **ignorato silenziosamente** (l'`if` a riga 5500 salta tutto il blocco) — quindi il file `buff.txt` deve avere abbastanza righe da coprire l'indice del nuovo buff, non solo "una riga in più a caso".
 
+## Verifica esterna (2026-09-13)
+
+**Nessuna traccia esterna trovata specificamente per `Data/Client/buff.txt`** — probabile feature troppo recente/di nicchia per comparire in ricerche pubbliche indicizzate (stesso caso di `FullIndexSetModifySpell` in `spells-ui.md`). Confermato però indirettamente il concetto di base: un thread ServUO su come identificare le buff icon conferma che "il numero di BuffIcon viene tradotto dal client in un'immagine gump, il riferimento è nel client, non nel server" — coerente con l'architettura già documentata sopra (`BuffTable.Table[iconID]`). Nessuna discrepanza trovata rispetto a quanto già scritto, ma il meccanismo del file esterno resta verificato solo internamente (lettura del codice), non confermato da fonti terze.
+
 ## Decisioni custom
 
 Nessuna decisione ancora presa.

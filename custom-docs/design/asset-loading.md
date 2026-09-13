@@ -34,6 +34,10 @@
 - L'indicizzazione avviene una sola volta al boot: aggiungere/modificare un file richiede un riavvio del client per essere visto (nessun hot-reload).
 - Per land art, servono comunque ID esistenti da sostituire (retexture), non è possibile "inventare" terreno nuovo con questo meccanismo.
 
+## Verifica esterna (2026-09-13)
+
+**Confermato pienamente, con fonte primaria diretta.** Trovate le PR ufficiali sul repo GitHub `ClassicUO/ClassicUO`, tutte mergiate il 6 settembre 2026: [#1932](https://github.com/ClassicUO/ClassicUO/pull/1932) (suoni, `Sounds/<id>.wav`, validazione 22.050Hz/mono/16-bit, indicizzazione una tantum al load — non un check ad ogni riproduzione), [#1934](https://github.com/ClassicUO/ClassicUO/pull/1934) (gump art/item art/land art da cartella), [#1935](https://github.com/ClassicUO/ClassicUO/pull/1935) (stringhe da file di testo). Ogni dettaglio tecnico letto nel codice sorgente (path, formato, fallback "il file sciolto vince sull'archivio") coincide esattamente con la descrizione della PR. Nessuna discrepanza trovata.
+
 ## Decisioni custom
 
 Nessuna decisione ancora presa.
