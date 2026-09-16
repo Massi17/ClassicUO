@@ -178,7 +178,7 @@ namespace ClassicUO.Game.UI.Gumps
                 return (0f, 0f, 0f);
             }
 
-            var cappedHits = System.MathF.Min(hits, total);
+            var cappedHits = System.MathF.Min(hits, hitsMax);
             var green = cappedHits / total;
             var purple = (float) shield / total;
             var empty = System.MathF.Max(0f, 1f - green - purple);
@@ -479,6 +479,7 @@ namespace ClassicUO.Game.UI.Gumps
                     }
 
                     _bars[0].IsVisible = false;
+                    _shieldBar.IsVisible = false;
                 }
             }
 
@@ -564,6 +565,7 @@ namespace ClassicUO.Game.UI.Gumps
                     }
 
                     _bars[0].IsVisible = true;
+                    _shieldBar.IsVisible = true;
                 }
 
                 if (World.TargetManager.LastTargetInfo.Serial != World.Player && !_outOfRange && mobile != null)
@@ -657,9 +659,9 @@ namespace ClassicUO.Game.UI.Gumps
                     _bars[0].LineWidth = hits;
                 }
 
-                if (shieldWidth != _shieldBar.LineWidth || _shieldBar.X != HPB_BAR_SPACELEFT + hits)
+                if (shieldWidth != _shieldBar.LineWidth || _shieldBar.X != _bars[0].X + hits)
                 {
-                    _shieldBar.X = HPB_BAR_SPACELEFT + hits;
+                    _shieldBar.X = _bars[0].X + hits;
                     _shieldBar.LineWidth = shieldWidth;
                 }
 
@@ -845,7 +847,7 @@ namespace ClassicUO.Game.UI.Gumps
                         HPB_BAR_WIDTH,
                         HPB_BAR_HEIGHT,
                         HPB_COLOR_DRAW_PURPLE.PackedValue
-                    ) { LineWidth = 0 }
+                    ) { LineWidth = 0, AcceptMouseInput = false }
                 );
 
                 Add
@@ -1020,7 +1022,7 @@ namespace ClassicUO.Game.UI.Gumps
                             HPB_BAR_WIDTH,
                             HPB_BAR_HEIGHT,
                             HPB_COLOR_DRAW_PURPLE.PackedValue
-                        ) { LineWidth = 0 }
+                        ) { LineWidth = 0, AcceptMouseInput = false }
                     );
 
                     Add
@@ -1156,7 +1158,7 @@ namespace ClassicUO.Game.UI.Gumps
                             HPB_BAR_WIDTH,
                             HPB_BAR_HEIGHT,
                             HPB_COLOR_DRAW_PURPLE.PackedValue
-                        ) { LineWidth = 0 }
+                        ) { LineWidth = 0, AcceptMouseInput = false }
                     );
 
                     Add
@@ -1497,6 +1499,7 @@ namespace ClassicUO.Game.UI.Gumps
                         SHIELD_HUE,
                         0
                     )
+                    { AcceptMouseInput = false }
                 );
 
                 Add
@@ -1562,6 +1565,7 @@ namespace ClassicUO.Game.UI.Gumps
                             SHIELD_HUE,
                             0
                         )
+                        { AcceptMouseInput = false }
                     );
 
                     Add
@@ -1633,6 +1637,7 @@ namespace ClassicUO.Game.UI.Gumps
                             SHIELD_HUE,
                             0
                         )
+                        { AcceptMouseInput = false }
                     );
 
                     Width = _background.Width;
@@ -1770,6 +1775,7 @@ namespace ClassicUO.Game.UI.Gumps
                     }
 
                     _bars[0].IsVisible = false;
+                    _shieldBar.IsVisible = false;
                 }
             }
 
@@ -1854,6 +1860,7 @@ namespace ClassicUO.Game.UI.Gumps
                     }
 
                     _bars[0].IsVisible = true;
+                    _shieldBar.IsVisible = true;
                 }
 
                 if (inparty && mobile != null)

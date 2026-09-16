@@ -59,6 +59,17 @@ namespace ClassicUO.UnitTests.Game.UI.Gumps
         }
 
         [Fact]
+        public void CalculateShieldSegments_OverhealWithActiveShield_GreenPlusPurpleNeverExceedsOne()
+        {
+            var (green, purple, empty) = BaseHealthBarGump.CalculateShieldSegments(120, 100, 50);
+
+            // total = hitsMax + shield = 150; cappedHits = min(120, 100) = 100; green = 100/150; purple = 50/150
+            Assert.Equal(100f / 150f, green, 3);
+            Assert.Equal(50f / 150f, purple, 3);
+            Assert.True(green + purple <= 1f);
+        }
+
+        [Fact]
         public void CalculateShieldSegments_ZeroHitsMaxAndZeroShield_ReturnsAllZero()
         {
             var (green, purple, empty) = BaseHealthBarGump.CalculateShieldSegments(0, 0, 0);
