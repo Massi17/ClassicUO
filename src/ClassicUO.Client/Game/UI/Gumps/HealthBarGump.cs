@@ -178,7 +178,8 @@ namespace ClassicUO.Game.UI.Gumps
                 return (0f, 0f, 0f);
             }
 
-            var green = (float) hits / total;
+            var cappedHits = System.MathF.Min(hits, total);
+            var green = cappedHits / total;
             var purple = (float) shield / total;
             var empty = System.MathF.Max(0f, 1f - green - purple);
 

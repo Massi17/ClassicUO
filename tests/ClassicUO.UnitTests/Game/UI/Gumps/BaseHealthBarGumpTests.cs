@@ -48,6 +48,17 @@ namespace ClassicUO.UnitTests.Game.UI.Gumps
         }
 
         [Fact]
+        public void CalculateShieldSegments_Overheal_GreenClampsAtOneHundredPercent()
+        {
+            var (green, purple, empty) = BaseHealthBarGump.CalculateShieldSegments(150, 100, 0);
+
+            // total = 100; raw hits/total = 1.5, but green must clamp at 100%
+            Assert.Equal(1f, green, 3);
+            Assert.Equal(0f, purple, 3);
+            Assert.Equal(0f, empty, 3);
+        }
+
+        [Fact]
         public void CalculateShieldSegments_ZeroHitsMaxAndZeroShield_ReturnsAllZero()
         {
             var (green, purple, empty) = BaseHealthBarGump.CalculateShieldSegments(0, 0, 0);
