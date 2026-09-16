@@ -1346,6 +1346,9 @@ namespace ClassicUO.Game.UI.Gumps
         private GumpPic _background, _hpLineRed, _manaLineRed, _stamLineRed;
 
         private readonly GumpPicWithWidth[] _bars = new GumpPicWithWidth[3];
+        private GumpPicWithWidth _shieldBar;
+        // Hue chosen for visibility; tune by eye against the live client - see spec §"The three draw surfaces".
+        private const ushort SHIELD_HUE = 2;
 
         private Button _buttonHeal1, _buttonHeal2;
         private int _oldHits, _oldStam, _oldMana;
@@ -1486,6 +1489,18 @@ namespace ClassicUO.Game.UI.Gumps
 
                 Add
                 (
+                    _shieldBar = new GumpPicWithWidth
+                    (
+                        18,
+                        20,
+                        LINE_BLUE_PARTY,
+                        SHIELD_HUE,
+                        0
+                    )
+                );
+
+                Add
+                (
                     _bars[1] = new GumpPicWithWidth
                     (
                         18,
@@ -1533,6 +1548,18 @@ namespace ClassicUO.Game.UI.Gumps
                             12,
                             LINE_BLUE,
                             0,
+                            0
+                        )
+                    );
+
+                    Add
+                    (
+                        _shieldBar = new GumpPicWithWidth
+                        (
+                            34,
+                            12,
+                            LINE_BLUE,
+                            SHIELD_HUE,
                             0
                         )
                     );
@@ -1592,6 +1619,18 @@ namespace ClassicUO.Game.UI.Gumps
                             38,
                             LINE_BLUE,
                             0,
+                            0
+                        )
+                    );
+
+                    Add
+                    (
+                        _shieldBar = new GumpPicWithWidth
+                        (
+                            34,
+                            38,
+                            LINE_BLUE,
+                            SHIELD_HUE,
                             0
                         )
                     );
@@ -1888,14 +1927,23 @@ namespace ClassicUO.Game.UI.Gumps
 
                 int barW = inparty ? 96 : 109;
 
-                int hits = CalculatePercents(entity.HitsMax, entity.Hits, barW);
-
+                var (shieldGreenFrac, shieldPurpleFrac, _) = CalculateShieldSegments(entity.Hits, entity.HitsMax, entity.MagicShield);
+                int hits = (int) (barW * shieldGreenFrac);
+                int shieldWidth = (int) (barW * shieldPurpleFrac);
 
                 if (hits != _oldHits)
                 {
                     _bars[0].Percent = hits;
 
                     _oldHits = hits;
+                }
+
+                var shieldX = _bars[0].X + hits;
+
+                if (shieldWidth != _shieldBar.Percent || _shieldBar.X != shieldX)
+                {
+                    _shieldBar.X = shieldX;
+                    _shieldBar.Percent = shieldWidth;
                 }
 
 
