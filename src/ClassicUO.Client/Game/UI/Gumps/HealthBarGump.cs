@@ -169,6 +169,22 @@ namespace ClassicUO.Game.UI.Gumps
             return max;
         }
 
+        internal static (float green, float purple, float empty) CalculateShieldSegments(int hits, int hitsMax, int shield)
+        {
+            var total = hitsMax + shield;
+
+            if (total <= 0)
+            {
+                return (0f, 0f, 0f);
+            }
+
+            var green = (float) hits / total;
+            var purple = (float) shield / total;
+            var empty = System.MathF.Max(0f, 1f - green - purple);
+
+            return (green, purple, empty);
+        }
+
         protected override void OnDragEnd(int x, int y)
         {
             // when dragging an healthbar with target on, we have to reset the dclick timer
