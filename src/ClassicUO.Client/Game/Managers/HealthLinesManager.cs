@@ -3,6 +3,7 @@
 using ClassicUO.Configuration;
 using ClassicUO.Game.Data;
 using ClassicUO.Game.GameObjects;
+using ClassicUO.Game.UI.Gumps;
 using ClassicUO.Renderer;
 using Microsoft.Xna.Framework;
 
@@ -191,7 +192,9 @@ namespace ClassicUO.Game.Managers
                 return;
             }
 
-            int per = BAR_WIDTH * entity.HitsPercentage / 100;
+            var (shieldGreenFrac, shieldPurpleFrac, _) = BaseHealthBarGump.CalculateShieldSegments(entity.Hits, entity.HitsMax, entity.MagicShield);
+            int per = (int) (BAR_WIDTH * shieldGreenFrac);
+            int shieldPer = (int) (BAR_WIDTH * shieldPurpleFrac);
 
             Mobile mobile = entity as Mobile;
 
@@ -318,13 +321,15 @@ namespace ClassicUO.Game.Managers
 
             hueVecNoto.X = 0x21;
 
+            int filledPer = per + shieldPer;
+
             if (entity.Hits != entity.HitsMax || entity.HitsMax == 0)
             {
                 int offset = 2;
 
-                if (per >> 2 == 0)
+                if (filledPer >> 2 == 0)
                 {
-                    offset = per;
+                    offset = filledPer;
                 }
 
                 gumpInfo = ref Client.Game.UO.Gumps.GetGump(HP_GRAPHIC);
@@ -332,9 +337,9 @@ namespace ClassicUO.Game.Managers
                 batcher.DrawTiled(
                     gumpInfo.Texture,
                     new Rectangle(
-                        x + per * MULTIPLER - offset,
+                        x + filledPer * MULTIPLER - offset,
                         y,
-                        (BAR_WIDTH - per) * MULTIPLER - offset / 2,
+                        (BAR_WIDTH - filledPer) * MULTIPLER - offset / 2,
                         gumpInfo.UV.Height * MULTIPLER
                     ),
                     gumpInfo.UV,
@@ -365,6 +370,23 @@ namespace ClassicUO.Game.Managers
                 batcher.DrawTiled(
                     gumpInfo.Texture,
                     new Rectangle(x, y, per * MULTIPLER, gumpInfo.UV.Height * MULTIPLER),
+                    gumpInfo.UV,
+                    hueVecNoto,
+                    layerDepth
+                );
+            }
+
+            if (shieldPer > 0)
+            {
+                // Hue chosen for visibility; tune by eye against the live client - see spec §"The three draw surfaces".
+                const ushort SHIELD_HUE = 2;
+
+                hueVecNoto.X = SHIELD_HUE;
+
+                gumpInfo = ref Client.Game.UO.Gumps.GetGump(HP_GRAPHIC);
+                batcher.DrawTiled(
+                    gumpInfo.Texture,
+                    new Rectangle(x + per * MULTIPLER, y, shieldPer * MULTIPLER, gumpInfo.UV.Height * MULTIPLER),
                     gumpInfo.UV,
                     hueVecNoto,
                     layerDepth
