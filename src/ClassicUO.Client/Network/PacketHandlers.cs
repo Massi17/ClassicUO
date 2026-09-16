@@ -4721,6 +4721,14 @@ namespace ClassicUO.Network
 
                     break;
 
+                case 0x4D53: // Magic Shield (this fork's extension - see custom-docs/specs/2026-09-16-magic-shield-design.md)
+                    uint shieldSerial = p.ReadUInt32BE();
+                    ushort shieldPoints = p.ReadUInt16BE();
+
+                    ApplyMagicShield(world, shieldSerial, shieldPoints);
+
+                    break;
+
                 case 0xBEEF: // ClassicUO commands
 
                     type = p.ReadUInt16BE();
@@ -4731,6 +4739,16 @@ namespace ClassicUO.Network
                     Log.Warn($"Unhandled 0xBF - sub: {cmd.ToHex()}");
 
                     break;
+            }
+        }
+
+        internal static void ApplyMagicShield(World world, uint serial, ushort points)
+        {
+            var entity = world.Get(serial);
+
+            if (entity != null)
+            {
+                entity.MagicShield = points;
             }
         }
 

@@ -36,6 +36,7 @@ namespace ClassicUO.Game.GameObjects
         public Flags Flags;
         public ushort Hits;
         public ushort HitsMax;
+        public ushort MagicShield;
         public byte HitsPercentage;
         public bool IsClicked;
         public uint LastStepTime;
