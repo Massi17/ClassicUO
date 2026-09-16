@@ -342,6 +342,8 @@ namespace ClassicUO.Game.UI.Gumps
 
         private readonly LineCHB[] _bars = new LineCHB[3];
         private readonly LineCHB[] _border = new LineCHB[4];
+        private static Color HPB_COLOR_DRAW_PURPLE = Color.Purple;
+        private LineCHB _shieldBar;
 
         private LineCHB _hpLineRed, _manaLineRed, _stamLineRed, _outline;
 
@@ -645,11 +647,19 @@ namespace ClassicUO.Game.UI.Gumps
                 }
 
 
-                int hits = CalculatePercents(entity.HitsMax, entity.Hits, HPB_BAR_WIDTH);
+                var (shieldGreenFrac, shieldPurpleFrac, _) = CalculateShieldSegments(entity.Hits, entity.HitsMax, entity.MagicShield);
+                int hits = (int) (HPB_BAR_WIDTH * shieldGreenFrac);
+                int shieldWidth = (int) (HPB_BAR_WIDTH * shieldPurpleFrac);
 
                 if (hits != _bars[0].LineWidth)
                 {
                     _bars[0].LineWidth = hits;
+                }
+
+                if (shieldWidth != _shieldBar.LineWidth || _shieldBar.X != HPB_BAR_SPACELEFT + hits)
+                {
+                    _shieldBar.X = HPB_BAR_SPACELEFT + hits;
+                    _shieldBar.LineWidth = shieldWidth;
                 }
 
                 if ((inparty || LocalSerial == World.Player) && mobile != null && _bars != null)
@@ -827,6 +837,18 @@ namespace ClassicUO.Game.UI.Gumps
 
                 Add
                 (
+                    _shieldBar = new LineCHB
+                    (
+                        HPB_BAR_SPACELEFT,
+                        27,
+                        HPB_BAR_WIDTH,
+                        HPB_BAR_HEIGHT,
+                        HPB_COLOR_DRAW_PURPLE.PackedValue
+                    ) { LineWidth = 0 }
+                );
+
+                Add
+                (
                     _bars[1] = new LineCHB
                     (
                         HPB_BAR_SPACELEFT,
@@ -990,6 +1012,18 @@ namespace ClassicUO.Game.UI.Gumps
 
                     Add
                     (
+                        _shieldBar = new LineCHB
+                        (
+                            HPB_BAR_SPACELEFT,
+                            27,
+                            HPB_BAR_WIDTH,
+                            HPB_BAR_HEIGHT,
+                            HPB_COLOR_DRAW_PURPLE.PackedValue
+                        ) { LineWidth = 0 }
+                    );
+
+                    Add
+                    (
                         _bars[1] = new LineCHB
                         (
                             HPB_BAR_SPACELEFT,
@@ -1109,6 +1143,18 @@ namespace ClassicUO.Game.UI.Gumps
                             HPB_BAR_WIDTH,
                             HPB_BAR_HEIGHT,
                             HPB_COLOR_DRAW_BLUE.PackedValue
+                        ) { LineWidth = 0 }
+                    );
+
+                    Add
+                    (
+                        _shieldBar = new LineCHB
+                        (
+                            HPB_BAR_SPACELEFT,
+                            21,
+                            HPB_BAR_WIDTH,
+                            HPB_BAR_HEIGHT,
+                            HPB_COLOR_DRAW_PURPLE.PackedValue
                         ) { LineWidth = 0 }
                     );
 
